@@ -16,7 +16,7 @@ public class Tutorial3 {
 		logger.info("Status{}",order1.getStatus());
 		// xxxxx
 		order1.setStatus(WorkingType.PendingInstalltion);
-		logger.info("Status{}",order1.getStatus());
+		logger.info("Status{},aba:{}",order1.getStatus(),"123");
 		// 報峻
 		order1.setStatus(WorkingType.Receiver);
 		logger.info("Status{}",order1.getStatus());
