@@ -5,10 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.waterstart.vo.WorkingType;
 
 public class Tutorial5 {
@@ -32,6 +32,8 @@ public class Tutorial5 {
 		// mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc14
 		// -Dversion=10.2.0.3.0 -Dpackaging=jar -Dfile=ojdbc.jar
 		// -DgeneratePom=true
+		java.util.Date date = new java.util.Date();
+		Date sqlDate1 = new Date(System.currentTimeMillis());
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet rs = null;
@@ -57,11 +59,14 @@ public class Tutorial5 {
 			statement.close();
 			statement = connection.prepareStatement("UPDATE workOrder set orderStatus = ? where orderNumber = ?");
 			statement.setString(1, WorkingType.PendingInstalltion.toString());
+			statement.setString(2, "20151121000002");
+			int rows =  statement.executeUpdate();
+			log.info("update rows:{}",rows);
 			connection.setAutoCommit(true);
 		} catch (ClassNotFoundException cnfe) {
-			log.info("找不到 JDBC DRIVER");
+			log.error("找不到 JDBC DRIVER");
 		} catch (SQLException sqle) {
-			log.info("執行SQL錯誤，訊息：{}",sqle.getMessage());
+			log.error("執行SQL錯誤，訊息：{}",sqle.getMessage());
 			try {
 				connection.rollback();
 			} catch (SQLException e) {
