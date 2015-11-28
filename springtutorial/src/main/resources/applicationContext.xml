@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd">
+        <bean id="jdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        	<constructor-arg index="0" ref="dataSource">
+        	</constructor-arg>
+        </bean>
+        <bean id="poolProperties" class="org.apache.tomcat.jdbc.pool.PoolProperties">
+		<property name="url" value="jdbc:postgresql://127.0.0.1/test"></property>
+		<property name="username" value="test"></property>
+		<property name="password" value="test"></property>
+		<property name="driverClassName" value="org.postgresql.Driver"></property>
+		<property name="jmxEnabled" value="true"></property>
+		<property name="testWhileIdle" value="true"></property>
+		<property name="testOnBorrow" value="true"></property>
+		<property name="testOnReturn" value="false"></property>
+		<property name="validationQuery" value="select 1"></property>
+		<property name="validationInterval" value="30000"></property>
+		<property name="timeBetweenEvictionRunsMillis" value="5000"></property>
+		<property name="maxActive" value="20"></property>
+		<property name="maxIdle" value="10"></property>
+		<property name="minIdle" value="5"></property>
+		<property name="maxWait" value="600000"></property>
+		<property name="useEquals" value="true"></property>
+		<property name="abandonWhenPercentageFull" value="50"></property>
+		<property name="initialSize" value="3"></property>
+		<property name="removeAbandonedTimeout" value="180"></property>
+		<property name="removeAbandoned" value="true"></property>
+		<property name="logAbandoned" value="true"></property>
+		<property name="minEvictableIdleTimeMillis" value="30000"></property>
+		<property name="jdbcInterceptors">
+			<value>
+				org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;
+				org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer
+			</value>
+		</property>
+	</bean>
+	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource">
+		<property name="poolProperties" ref="poolProperties"></property>
+	</bean>
+	
+	<bean id="workOrderDAO" class="com.waterstart.dao.impl.WorkOrderDAOImpl">
+		<property name="namedParameterJdbcTemplate" ref="jdbcTemplate"></property>
+	</bean>
+	
+</beans>
